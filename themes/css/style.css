@@ -1,0 +1,138 @@
+body {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 400;
+	background-color: #FAFAFA;
+	margin: 0;
+	padding: 0;
+}
+
+h1, h2, h3, #logo { font-family: 'Pacifico', cursive; }
+
+/*** Navbar ***/
+
+nav {
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	padding: 15px 30px;
+	background-color: white;
+	border-bottom: 1px solid #e0e0e0;
+	z-index: 1;
+}
+
+nav #logo {
+	font-size: 1.5em;
+	margin-top: 3px;
+}
+
+nav a {
+	color: #262626;
+	text-decoration: none;
+}
+
+nav ul {
+	list-style: none;
+}
+
+nav ul li {
+	display: inline-block;
+	margin-left: 20px;
+}
+
+/***************/
+
+.container {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: 120px 35px;
+}
+
+.log-in {	
+	background: url('../img/intro-bg.jpg') center top no-repeat;
+	background-size: cover;
+}
+
+/*** Form ***/
+
+.encart {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 300px;
+	padding: 20px;
+	background-color: white;
+	border: 1px solid #e0e0e0;
+	transform: translate(-50%, -50%);
+}
+
+form input[type=text],
+form input[type=password],
+form input[type=submit] {
+	font-size: 0.9em;
+}
+
+form input[type=text],
+form input[type=password] {
+	width: 90%;
+	height: 28px;
+	border-radius: 5px;
+	border: 1px solid #e0e0e0;
+	margin: 5px 0 15px 0;
+	padding: 4px;
+}
+
+form input[type=submit] {
+	padding: 10px 10px;
+}
+
+.encart a { color: #3897F0; text-decoration: none; }
+.forgot a { color: #999999; font-size: 0.8em; }
+
+/***************/
+
+.separator {
+	display: block;
+	height: 1px;
+	width: 100%;
+	background-color: #e0e0e0;
+	margin: 25px 0 25px 0;
+}
+
+.btn {
+	padding: 5px 15px;
+	border-radius: 5px;
+	margin-left: 5px;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.btn-blue {
+	color: white;
+	background-color: #3897F0;
+	border: 1px solid #3897F0;
+	font-weight: 700;
+}
+
+/*** Footer ***/
+
+footer {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: 40px 30px;
+	text-align: right;
+	background-color: #262626;
+	color: #AAAAAA;
+	font-size: 13px;
+	font-style: italic;
+}
+
+.align-center { text-align: center; }
+.align-right { float: right; }
+.align-left { float: left; }
+.clear { clear: both; }
