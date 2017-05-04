@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 	if (isset($_POST['submit']))
 	{
@@ -15,11 +15,13 @@
 		    $conn = new PDO($DB_DSN.";dbname=".$DB_NAME, $DB_USER, $DB_PASSWORD);
 		    // set the PDO error mode to exception
 		    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		    date_default_timezone_set("Europe/Paris");
+			$date = date('Y-m-d h:i:sa');
 		    $sql = "INSERT INTO users (email, username, password, created)
-		    VALUES ($email, $username, $passwd, '1')";
+		    VALUES ('$email', '$username', '$passwd', '$date')";
 		    // use exec() because no results are returned
 		    $conn->exec($sql);
-		    echo "New record created successfully";
+		    $msg = "c'est bon";
 		    }
 		catch(PDOException $e)
 		    {
@@ -27,8 +29,6 @@
 		    }
 
 		$conn = null;
-
-		$msg = "c'est bon";
 	}
 
 ?>
@@ -53,7 +53,7 @@
 			<br>
 			<input type="text" name="email" id="email" placeholder="Your email" required>
 			<br>
-			
+
 			<label for="username">Username</label>
 			<br>
 			<input type="text" name="username" id="username" placeholder="Your username" required>
@@ -62,11 +62,11 @@
 			<label for="passwd">Password</label>
 			<br>
 			<input type="password" name="passwd" id="passwd" placeholder="Choose a password" required>
-			<br>			
+			<br>
 
 			<input type="submit" name="submit" value="Sign Up" class="btn btn-blue">
-			<?php echo $msg; ?>	
-			
+			<?php echo $msg; ?>
+
 		</form>
 
 		<div class="separator"></div>
@@ -77,7 +77,7 @@
 
 	</div>
 </div>
-	
+
 </div>
 
 <?php require_once('themes/footer.html'); ?>
