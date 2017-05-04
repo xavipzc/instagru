@@ -1,3 +1,38 @@
+<?php 
+
+	if (isset($_POST['submit']))
+	{
+		$email = $_POST['email'];
+		$username = $_POST['username'];
+		$passwd = hash(whirlpool, $_POST['passwd']);
+
+		require('config/database.php');
+		// $conn = new PDO($DB_DSN.";dbname=".$DB_NAME, $DB_USER, $DB_PASSWORD);
+		// $sql = "INSERT INTO `".$DB_NAME."`.`users` (email, username, password) VALUES ($email, $username, $passwd)";
+		// $conn->exec($sql);
+
+		try {
+		    $conn = new PDO($DB_DSN.";dbname=".$DB_NAME, $DB_USER, $DB_PASSWORD);
+		    // set the PDO error mode to exception
+		    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		    $sql = "INSERT INTO users (email, username, password, created)
+		    VALUES ($email, $username, $passwd, '1')";
+		    // use exec() because no results are returned
+		    $conn->exec($sql);
+		    echo "New record created successfully";
+		    }
+		catch(PDOException $e)
+		    {
+		    echo $sql . "<br>" . $e->getMessage();
+		    }
+
+		$conn = null;
+
+		$msg = "c'est bon";
+	}
+
+?>
+
 <?php require_once('themes/header.html'); ?>
 
 <div class="container log-in">
@@ -12,7 +47,7 @@
 
 		<div class="separator"></div>
 
-		<form action="" method="POST" class="align-center">
+		<form action="signup.php" method="POST" class="align-center">
 
 			<label for="email">Email</label>
 			<br>

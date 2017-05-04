@@ -1,6 +1,7 @@
 <?php
 	
-	if ($_GET['USER'] == "xav" && $_GET['PW'] == "test")
+	if ($_SERVER['PHP_AUTH_USER'] == "xav" && $_SERVER['PHP_AUTH_PW'] == "test")
+	//if ($_GET['USER'] == "xav" && $_GET['PW'] == "test")
 	{
 
 ?>
@@ -13,7 +14,8 @@
 	}
 	else
 	{
-		header('Location: signup.php');
+		header("WWW-Authenticate: Basic realm=''Espace membres''");
+		header('HTTP/1.0 401 Unauthorized');
 	}
 
 ?>
