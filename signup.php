@@ -7,26 +7,45 @@
 		$passwd = hash(whirlpool, $_POST['passwd']);
 
 		require('config/database.php');
-		// $conn = new PDO($DB_DSN.";dbname=".$DB_NAME, $DB_USER, $DB_PASSWORD);
-		// $sql = "INSERT INTO `".$DB_NAME."`.`users` (email, username, password) VALUES ($email, $username, $passwd)";
-		// $conn->exec($sql);
 
 		try {
-		    $conn = new PDO($DB_DSN.";dbname=".$DB_NAME, $DB_USER, $DB_PASSWORD);
-		    // set the PDO error mode to exception
-		    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		    date_default_timezone_set("Europe/Paris");
-			$date = date('Y-m-d h:i:sa');
-		    $sql = "INSERT INTO users (email, username, password, created)
-		    VALUES ('$email', '$username', '$passwd', '$date')";
-		    // use exec() because no results are returned
-		    $conn->exec($sql);
-		    $msg = "c'est bon";
-		    }
-		catch(PDOException $e)
-		    {
-		    echo $sql . "<br>" . $e->getMessage();
-		    }
+			$conn = new PDO($DB_DSN.";dbname=".$DB_NAME, $DB_USER, $DB_PASSWORD);
+
+			// set the PDO error mode to exception
+			$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+			date_default_timezone_set("Europe/Paris");
+			$date = date('Y-m-d h:i:s');
+			$token = hash(sha1, $date);
+			$sql = "INSERT INTO users (email, username, password, token, active, created)
+			VALUES ('$email', '$username', '$passwd', '$token', '0', '$date')";
+	
+			// use exec() because no results are returned
+			$conn->exec($sql);
+
+			// Préparation du mail contenant le lien d'activation
+			$sujet = "Activate your account";
+			$entete = "From: noreply@camagru.io";
+			 
+			// Le lien d'activation est composé du login(log) et de la clé(cle)
+			$message = '			Welcome to Camagru,
+			 
+			To activate your account, please follow the link bellow
+			or copy/paste the link into your browser.
+			 
+			http://localhost:8080/camagru/activation.php?username='.urlencode($username).'&token='.urlencode($token).'
+			 
+			---------------
+
+			This is an automatic email.';
+
+			mail($email, $sujet, $message, $entete) ; // Envoi du mail
+
+			$msg = 'Thanks, a confirmation email has been sent to your inbox !';
+		}
+		catch (PDOException $e) {
+			echo $sql . "<br>" . $e->getMessage();
+		}
 
 		$conn = null;
 	}
@@ -65,6 +84,7 @@
 			<br>
 
 			<input type="submit" name="submit" value="Sign Up" class="btn btn-blue">
+			<br>
 			<?php echo $msg; ?>
 
 		</form>

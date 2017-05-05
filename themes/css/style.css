@@ -8,6 +8,9 @@ body {
 
 h1, h2, h3, #logo { font-family: 'Pacifico', cursive; }
 
+a { color: #3897F0; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
 /*** Navbar ***/
 
 nav {

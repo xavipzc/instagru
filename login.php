@@ -20,7 +20,7 @@
 			<br>			
 
 			<input type="submit" name="submit" value="Log in" class="btn btn-blue">
-			<?php echo $msg; ?>	
+			<?php echo $msg; ?>
 			
 		</form>
 

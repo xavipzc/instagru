@@ -25,7 +25,8 @@
 					`email` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
 					`username` VARCHAR( 30 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
 					`password` CHAR( 128 ) NOT NULL ,
-					`salt` CHAR( 128 ) NOT NULL ,
+					`token` CHAR( 40 ) NOT NULL ,
+					`active` INT( 1 ) NOT NULL,
 					`created` DATETIME NOT NULL
 					) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;";
 	 
