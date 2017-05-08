@@ -9,7 +9,6 @@ body {
 h1, h2, h3, #logo { font-family: 'Pacifico', cursive; }
 
 a { color: #3897F0; text-decoration: none; }
-a:hover { text-decoration: underline; }
 
 /*** Navbar ***/
 
@@ -117,6 +116,13 @@ form input[type=submit] {
 	color: white;
 	background-color: #3897F0;
 	border: 1px solid #3897F0;
+	font-weight: 700;
+}
+
+.btn-red {
+	color: white;
+	background-color: #dd0000;
+	border: 1px solid #dd0000;
 	font-weight: 700;
 }
 

@@ -1,9 +1,25 @@
-<?php require_once('themes/header.html'); ?>
+<?php
+	
+	session_start();
 
-<div class="container">
+	if ($_SESSION['user'])
+	{
 
-	<h1>My fucking Timeline</h1>
+		?><?php require_once('themes/header.html'); ?>
 
-</div>
+		<div class="container">
 
-<?php require_once('themes/footer.html'); ?>
+			<h1><?php echo $_SESSION['user']; ?>'s Timeline</h1>
+			<p>Hello <?php echo $_SESSION['user']; ?></p>
+
+		</div>
+
+		<?php require_once('themes/footer.html');
+
+	}
+	else
+	{
+		header("Location: index.php");
+	}
+
+?>
