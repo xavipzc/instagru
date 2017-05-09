@@ -5,21 +5,38 @@
 	if ($_SESSION['user'])
 	{
 
-		?><?php require_once('themes/header.html'); ?>
+		require_once('themes/header.html');
+		require_once('themes/navbar_logged.html');
+?>
 
-		<div class="container">
+	<div class="container">
 
-			<h1><?php echo $_SESSION['user']; ?>'s Timeline</h1>
-			<p>Hello <?php echo $_SESSION['user']; ?></p>
+		<h1><?php echo ucfirst($_SESSION['user']); ?>'s Timeline</h1>
+		<p>Hello <?php echo ucfirst($_SESSION['user']); ?></p>
 
-		</div>
+	</div>
 
-		<?php require_once('themes/footer.html');
-
+<?php 
+	
+	require_once('themes/footer.html');
 	}
 	else
 	{
-		header("Location: index.php");
+		require_once('themes/header.html');
+		require_once('themes/navbar.html');
+?>
+
+	<div class="container">
+
+		<h1>Normal Timeline</h1>
+		<p>Hello you, you have to be connected to comment and like pictures. Sign up or Log you in.</p>
+
+	</div>
+
+<?php
+
 	}
+
+	require_once('themes/footer.html');
 
 ?>

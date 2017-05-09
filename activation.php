@@ -48,7 +48,10 @@
 
 ?>
 
-<?php require_once('themes/header.html'); ?>
+<?php 
+	require_once('themes/header.html');
+	require_once('themes/navbar.html');
+?>
 
 <div class="container">
 

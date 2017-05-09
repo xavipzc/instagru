@@ -57,6 +57,12 @@
 ?>
 
 <?php require_once('themes/header.html'); ?>
+<?php 
+	if ($_SESSION['user'])
+		require_once('themes/navbar_logged.html');
+	else
+		require_once('themes/navbar.html');
+?>
 
 <div class="container log-in">
 
