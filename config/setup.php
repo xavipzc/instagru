@@ -20,17 +20,28 @@
 	// check if connection is ok
 	if ($connection){
 		// table request init
-		$request = "CREATE TABLE IF NOT EXISTS `".$DB_NAME."`.`users` (
+		$users = "CREATE TABLE IF NOT EXISTS `".$DB_NAME."`.`users` (
 					`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 					`email` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
 					`username` VARCHAR( 30 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
 					`password` CHAR( 128 ) NOT NULL ,
 					`token` CHAR( 40 ) NOT NULL ,
-					`active` INT( 1 ) NOT NULL,
+					`active` INT( 1 ) NOT NULL ,
 					`created` DATETIME NOT NULL
 					) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;";
-	 
-		$connection->prepare($request)->execute();
+		$connection->prepare($users)->execute();
+
+		$likes = "CREATE TABLE IF NOT EXISTS `".$DB_NAME."`.`likes` (
+					`id_user` INT( 10 ) NOT NULL ,
+					`id_image` INT( 10 ) NOT NULL
+					) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;";
+		$connection->prepare($likes)->execute();
+
+		header('Location: ../index.php');
+	}
+	else
+	{
+		echo "Something went wrong !";
 	}
 
 ?>
