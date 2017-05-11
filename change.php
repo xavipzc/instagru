@@ -21,11 +21,8 @@
 
 			if ($tokendb && ($token == $tokendb))
 			{
-				require_once('themes/header.html');
-				require_once('themes/navbar.html');
+				require_once('themes/header.php');
 				?>
-
-				<div class="container">
 
 					<h1>Change your password</h1>
 					<form action="change_pwd.php" method="POST" class="align-center">
@@ -40,23 +37,17 @@
 
 					</form>
 
-				</div>
 
 				<?php
 				require_once('themes/footer.html');
 			}
 			else 
 			{
-				require_once('themes/header.html');
-				require_once('themes/navbar.html');
+				require_once('themes/header.php');
 				?>
-
-				<div class="container">
 
 					<h1>Change your password</h1>
 					<p>Something went wrong.</p>
-
-				</div>
 
 				<?php
 				require_once('themes/footer.html');

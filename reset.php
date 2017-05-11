@@ -59,18 +59,11 @@
 	}
 
 ?>
-<?php
-	require_once('themes/header.html');
+<?php require_once('themes/header.php'); ?>
 
-	if ($_SESSION['user'])
-		require_once('themes/navbar_logged.html');
-	else
-		require_once('themes/navbar.html');
-?>
-
-<div class="container log-in">
-
+<div class="log-in">
 	<div class="encart">
+
 		<h1 class="align-center">
 			<i class="fa fa-instagram" aria-hidden="true"></i> Camagru
 		</h1>
@@ -94,8 +87,6 @@
 		</p>
 
 	</div>
-</div>
-	
 </div>
 
 <?php require_once('themes/footer.html'); ?>

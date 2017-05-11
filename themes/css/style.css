@@ -45,17 +45,17 @@ nav ul li {
 /***************/
 
 .container {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
 	padding: 120px 35px;
 }
 
-.log-in {	
-	background: url('../img/intro-bg.jpg') center top no-repeat;
-	background-size: cover;
+.log-in {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;	
+	/*background: url('../img/intro-bg.jpg') center top no-repeat;*/
+	/*background-size: cover;*/
 }
 
 /*** Form ***/
@@ -125,6 +125,9 @@ form input[type=submit] {
 	border: 1px solid #dd0000;
 	font-weight: 700;
 }
+
+.error-msg { font-size: 0.8em; color: red; }
+.success-msg { font-size: 0.8em; color: green; }
 
 /*** Footer ***/
 
