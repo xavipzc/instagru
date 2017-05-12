@@ -2,34 +2,29 @@
 
 	if (isset($_POST['submit']))
 	{
-		$username = $_POST['username'];
+		if (empty($_POST['email'])) {
+			$msg = '<br><span class="error-msg">Empty field!</span><br>';
+		}
+		else {
+			try {
+				require('config/database.php');
+				$conn = new PDO($DB_DSN.";dbname=".$DB_NAME, $DB_USER, $DB_PASSWORD);
+				$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-		require('config/database.php');
+				$req = $conn->prepare("SELECT * FROM users WHERE email = ? AND active = '1'");
+				$req->execute([$_POST['email']]);
+				$user = $req->fetch();
 
-		try {
-			$conn = new PDO($DB_DSN.";dbname=".$DB_NAME, $DB_USER, $DB_PASSWORD);
-			$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-			$stmt = $conn->prepare("SELECT email,active FROM users WHERE username like :username");
-			if ($stmt->execute(array(':username' => $username)) && $row = $stmt->fetch())
-			{
-				$email = $row['email'];
-				$active = $row['active'];
-			}
-
-			if ($email)
-			{
-				if ($active == 1)
+				if ($user)
 				{
 					$token = hash(sha1, $date);
-					$sql = "UPDATE users SET token = '$token' WHERE username like '$username'";
-				
-					// use exec() because no results are returned
-					$conn->exec($sql);
+					$upd = $conn->prepare("UPDATE users SET token = ? WHERE email = ?");
+					$upd->execute([$token, $user['email']]);
 
 					// Préparation du mail contenant le lien d'activation
-					$sujet = "Reset your password";
-					$entete = "From: noreply@camagru.io";
+					$email = $user['email'];
+					$subject = "Reset your password";
+					$header = "From: noreply@camagru.io";
 					 
 					// Le lien d'activation est composé du login(log) et de la clé(cle)
 					$message = '			Hello,
@@ -37,25 +32,23 @@
 					You forgot your password, if you want to change it please
 					follow the link bellow or copy/paste the link into your browser.
 					 
-					http://localhost:8080/camagru/change.php?username='.urlencode($username).'&token='.urlencode($token).'
+					http://localhost:8080/camagru/change.php?username='.urlencode($user['username']).'&token='.urlencode($token).'
 					 
 					---------------
 
 					This is an automatic email.';
 
-					mail($email, $sujet, $message, $entete) ; // Envoi du mail
+					mail($email, $subject, $message, $header) ; // Envoi du mail
 
-					$msg = 'An email has been sent to your inbox !';
+					$msg = '<br><span class="success-msg">An email with the instructions has been sent to your inbox !</span><br>';
 				}
-				else { $msg = 'This account is not activate'; }
+				else { $msg = '<br><span class="error-msg">This account doesn\'t exist</span><br>'; }
 			}
-			else { $msg = 'This username doesn\'t exist'; }
+			catch (PDOException $e) {
+				echo $sql . "<br>" . $e->getMessage();
+			}
+			$conn = null;
 		}
-		catch (PDOException $e) {
-			echo $sql . "<br>" . $e->getMessage();
-		}
-
-		$conn = null;
 	}
 
 ?>
@@ -68,13 +61,13 @@
 			<i class="fa fa-instagram" aria-hidden="true"></i> Camagru
 		</h1>
 
-		<form action="reset.php" method="POST" class="align-center">
+		<form action="" method="POST" class="align-center">
 			
 			<p class="align-center">
-				Enter your username to reset your password.
+				Enter your email to reset your password.
 			</p>
 
-			<input type="text" name="username" id="username" placeholder="Your username" required>
+			<input type="email" name="email" id="email" placeholder="Your email" >
 			<br>		
 
 			<input type="submit" name="submit" value="Reset password" class="btn btn-blue">

@@ -1,42 +1,39 @@
 <?php 
-	
-	require('config/database.php');
 
 	try {
+		require('config/database.php');
 		$conn = new PDO($DB_DSN.";dbname=".$DB_NAME, $DB_USER, $DB_PASSWORD);
 		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-		// Parse the url
-		$user = $_GET['username'];
-		$token = $_GET['token'];
-
-		if ($user && $token)
+		if (!empty($_GET['username']) && !empty($_GET['token']))
 		{
-			// Get the token from the get user in the database
-			$stmt = $conn->prepare("SELECT token FROM users WHERE username like :username");
-			if ($stmt->execute(array(':username' => $user)) && $row = $stmt->fetch())
-			{
-				$tokendb = $row['token'];
-			}
+			$req = $conn->prepare("SELECT token FROM users WHERE username = ? AND active = '1'");
+			$req->execute([$_GET['username']]);
+			$user = $req->fetch();
 
-			if ($tokendb && ($token == $tokendb))
+			if ($user && ($_GET['token'] == $user['token']))
 			{
 				require_once('themes/header.php');
 				?>
 
 					<h1>Change your password</h1>
+					<div class="encart">
 					<form action="change_pwd.php" method="POST" class="align-center">
 
 						<label for="passwd">New password</label>
 						<br>
 						<input type="password" name="passwd" id="passwd" placeholder="New password" required>
 						<br>
-						<input type="hidden" name="username" value="<?php echo $user; ?>" required>
+						<label for="confirm">Confirm your password</label>
+						<br>
+						<input type="password" name="passwd_confirm" id="confirm" placeholder="Confirm password" required>
+						<br>
+						<input type="hidden" name="username" value="<?php echo $_GET['username']; ?>" required>
 						<input type="submit" name="submit" value="Change it" class="btn btn-blue">
 						<br>
 
 					</form>
-
+					</div>
 
 				<?php
 				require_once('themes/footer.html');

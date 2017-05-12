@@ -18,7 +18,7 @@
 			if ($user['active'] == 0){
 				$msg = "Congrats ! Your account is activate !<br>";
 				$msg .= 'You can now <a href="login.php">log into our fucking website</a>';
-				$conn->prepare("UPDATE users SET active = 1 WHERE username = ?")->execute([$username]);
+				$conn->prepare("UPDATE users SET active = 1, token = 0 WHERE username = ?")->execute([$username]);
 			}
 			else {
 				$msg = 'Your account is already activate ! <a href="login.php">Log in.</a>';

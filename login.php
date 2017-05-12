@@ -1,49 +1,28 @@
 <?php
 
-	session_start();
-	if (isset($_POST['submit']))
+	if (!empty($_POST) && !empty($_POST['username']) && !empty($_POST['passwd']))
 	{
-		$username = $_POST['username'];
-		$passwd = hash(whirlpool, $_POST['passwd']);
-
-		require('config/database.php');
-
 		try {
+			require('config/database.php');
 			$conn = new PDO($DB_DSN.";dbname=".$DB_NAME, $DB_USER, $DB_PASSWORD);
 			$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-			$stmt = $conn->prepare("SELECT password,active FROM users WHERE username like :username");
-			if ($stmt->execute(array(':username' => $username)) && $row = $stmt->fetch())
-			{
-				$passwddb = $row['password'];
-				$active = $row['active'];
-			}
+			$req = $conn->prepare("SELECT * FROM users WHERE (username = :username OR email = :username) AND active = '1'");
+			$req->execute([':username' => $_POST['username']]);
+			$user = $req->fetch();
 
-			// Check if the account is already active
-			if ($passwddb)
+			$passwd = hash(whirlpool, $_POST['passwd']);
+			
+			if ($user['password'] == $passwd)
 			{
-				if($active == '0')
-				{
-					$msg = 'Your account isn\'t activate ! Check your inbox.';
-				}
-				else
-				{
-					// Comparaison, if it's true, creation of a user session
-					if ($passwddb == $passwd)
-					{
-						$_SESSION['user'] = $username;
-						header('Location: index.php');
-					}
-					else
-					{
-						$msg = "Wrong username or password.";
-					}
-				}
+				session_start();
+				$_SESSION['user'] = $user['username'];
+				header('Location: index.php');
+				exit();
 			}
-			// Username doesn't match
 			else
 			{
-				$msg = "Your username doesn't exist !";
+				$msg = '<br><span class="error-msg">Wrong username or password.</span><br>';
 			}
 		}
 		catch (PDOException $e) {
@@ -64,11 +43,11 @@
 			<i class="fa fa-instagram" aria-hidden="true"></i> Camagru
 		</h1>
 
-		<form action="login.php" method="POST" class="align-center">
+		<form action="" method="POST" class="align-center">
 
-			<label for="username">Username</label>
+			<label for="username">Username or email</label>
 			<br>
-			<input type="text" name="username" id="username" placeholder="Your username" required>
+			<input type="text" name="username" id="username" placeholder="Your username or email" required>
 			<br>
 
 			<label for="passwd">Password</label>
