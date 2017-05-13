@@ -36,7 +36,7 @@ if (session_status() == PHP_SESSION_NODE)
 		<li><a href="timeline.php"><i class="fa fa-search" aria-hidden="true"></i> Search</a></li>
 		<li><a href="timeline.php">Gallery</a></li>
 		<?php if (isset($_SESSION['user'])): ?>
-			<li><a href="">My story</a></li>
+			<li><a href="story.php">My story</a></li>
 			<li><a href="logout.php" class="btn btn-red">Log out</a></li>
 		<?php else: ?>
 			<li><a href="login.php" class="btn btn-blue">Log in</a></li>
