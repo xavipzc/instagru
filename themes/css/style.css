@@ -176,7 +176,8 @@ form input[type=submit] {
 }
 
 .cam video,
-.cam img {
+.cam img,
+.cam .upload {
 	position: absolute;
 	top: 20px;
 	left: 20px;
@@ -184,12 +185,15 @@ form input[type=submit] {
 .cam img {
 	z-index: 100;
 }
+.cam .upload {
+	z-index: 90;
+}
 
 .cam .sticker-select {
 	position: absolute;
 	bottom: 22px;
 	left: 20px;
-	z-index: 110;
+	z-index: 120;
 	font-size: 0.8em;
 }
 

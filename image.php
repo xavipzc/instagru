@@ -4,38 +4,48 @@
 
 	if (isset($_SESSION['user']) && isset($_GET['id']) && !empty($_GET['id'])) {
 
-		require('themes/header.php');
+		require_once('includes/bootstrap.php');
 
 		if (isset($_POST['submit']) && !empty($_POST['comment']))
 		{
-			try {
-				require('config/database.php');
-				$conn = new PDO($DB_DSN.";dbname=".$DB_NAME, $DB_USER, $DB_PASSWORD);
-				$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				$conn = App::getDatabase();
+				$conn->query('INSERT INTO comments SET id_image = ?, username = ?, comment = ?, created =?', 
+							 [$_GET['id'], $_SESSION['user'], htmlentities($_POST['comment']), getMyDateFormat()]);
+				$owner = $conn->query('SELECT users.email FROM users INNER JOIN images ON users.username = images.username WHERE images.id = ?',
+							 [$_GET['id']])->fetch();
 
-				date_default_timezone_set("Europe/Paris");
-				$date = date('Y-m-d H:i:s');
-				$req = $conn->prepare("INSERT INTO comments SET id_image = ?, username = ?, comment = ?, created =?");
-				$req->execute([$_GET['id'], $_SESSION['user'], htmlentities($_POST['comment']), $date]);
-			}
-			catch (PDOException $e) {
-				echo $req . "<br>" . $e->getMessage();
-			}
+				$email = $owner['email'];
+				$subject = $_SESSION['user'] . " commented your picture !";
+				$header = "From: noreply@camagru.io";
 
-			$conn = null;
+				// Le lien d'activation est composé du login(log) et de la clé(cle)
+				$message = '			Yo,
+
+				'. $_SESSION['user'] .' has just commented your picture :
+				
+				"'. htmlentities($_POST['comment']) .'"
+
+				You can see it with the link below :
+				http://localhost:8080/camagru/image.php?id='.urlencode($_GET['id']).'
+
+				---------------
+
+				This is an automatic email.';
+
+				mail($email, $subject, $message, $header) ; // Envoi du mail
+
 		} else if (isset($_POST['submit'])) {
 			$error = 'Your comment is not valid';
 		}
 
-		require('config/database.php');
-		$conn = new PDO($DB_DSN.";dbname=".$DB_NAME, $DB_USER, $DB_PASSWORD);
-		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$conn = App::getDatabase();
+		$pic = $conn->query('SELECT * FROM images WHERE id = ?', [$_GET['id']])->fetch();
 
-		$req = $conn->prepare('SELECT * FROM images WHERE id = ?');
-		$req->execute([$_GET['id']]);
-		$pic = $req->fetch();
+		if ($pic) { 
 
-		if ($pic) { ?>
+			require('themes/header.php');
+
+			?>
 
 			<div class="card align-left">
 				<img src="db_image/<?php echo $pic['name']; ?>.png" alt="<?php echo $pic['name']; ?>">
@@ -48,17 +58,13 @@
 						<li><a href="like.php?id=<?php echo $pic['id']; ?>" title="Like it"><i class="fa fa-heart
 						<?php
 
-							$req = $conn->prepare('SELECT * FROM likes WHERE id_user = ? AND id_image = ?');
-							$req->execute([$_SESSION['user_id'],$pic['id']]);
-							$find = $req->fetch();
+							$find = $conn->query('SELECT * FROM likes WHERE id_user = ? AND id_image = ?', [$_SESSION['user_id'],$pic['id']])->fetch();
 							if ($find) { echo "blue"; } else { echo ""; }
 
 						?>" aria-hidden="true"></i></a>
 						<?php
 
-							$req = $conn->prepare('SELECT COUNT(*) FROM likes WHERE id_image = ?');
-							$req->execute([$pic['id']]);
-							$id = $req->fetchColumn();
+							$id = $conn->query('SELECT COUNT(*) FROM likes WHERE id_image = ?', [$pic['id']])->fetchColumn();
 							if ($id) { echo '<span class="count">'.$id.'</span>'; } else { echo ""; }
 
 						?>
@@ -79,9 +85,7 @@
 
 				<?php
 
-					$req = $conn->prepare('SELECT * FROM comments WHERE id_image = ? ORDER BY created desc');
-					$req->execute([$_GET['id']]);
-					$ids = $req->fetchAll();
+					$ids = $conn->query('SELECT * FROM comments WHERE id_image = ? ORDER BY created desc', [$_GET['id']])->fetchAll();
 					if ($ids):
 						foreach ($ids as $key => $com) { ?>
 

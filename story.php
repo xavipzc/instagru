@@ -31,9 +31,12 @@
 
 	<div class="clear"></div>
 
+	<input id="file" type="file" multiple />
+	
+
 	<script src="themes/js/func.js"></script>
 	<script src="themes/js/camagru.js"></script>
 
-<?php require('themes/footer.html'); else: header('Location: login.php'); ?>
+<?php require('themes/footer.html'); else: header('Location: 404.php'); ?>
 
 <?php endif; ?>

@@ -28,7 +28,7 @@
 						<br>
 						<input type="password" name="passwd_confirm" id="confirm" placeholder="Confirm password" required>
 						<br>
-						<input type="hidden" name="username" value="<?php echo $_GET['username']; ?>" required>
+						<input type="hidden" name="username" value="<?php echo htmlentities($_GET['username']); ?>" required>
 						<input type="submit" name="submit" value="Change it" class="btn btn-blue">
 						<br>
 

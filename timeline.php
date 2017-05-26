@@ -2,6 +2,7 @@
 
 	session_start();
 	require('themes/header.php');
+	require_once('includes/bootstrap.php');
 
 ?>
 <?php if (isset($_SESSION['user'])): ?>
@@ -20,13 +21,8 @@
 
 <?php
 
-	require('config/database.php');
-	$conn = new PDO($DB_DSN.";dbname=".$DB_NAME, $DB_USER, $DB_PASSWORD);
-	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-	$req = $conn->prepare('SELECT * FROM images ORDER BY id desc');
-	$req->execute();
-	$pics = $req->fetchAll();
+	$conn = App::getDatabase();
+	$pics = $conn->query('SELECT * FROM images ORDER BY id desc')->fetchAll();
 
 	if ($pics) {
 		foreach ($pics as $key => $value) { ?>
@@ -41,9 +37,7 @@
 						<li><a href="image.php?id=<?php echo $value['id']; ?>" title="Comment it"><i class="fa fa-comment" aria-hidden="true"></i>
 						<?php
 
-							$req = $conn->prepare('SELECT COUNT(*) FROM comments WHERE id_image = ?');
-							$req->execute([$value['id']]);
-							$com = $req->fetchColumn();
+							$com = $conn->query('SELECT COUNT(*) FROM comments WHERE id_image = ?', [$value['id']])->fetchColumn();
 							if ($com) { echo '<span class="count">'.$com.'</span>'; } else { echo ""; }
 
 						?>
@@ -52,17 +46,13 @@
 						<li><a href="like.php?id=<?php echo $value['id']; ?>" title="Like it"><i class="fa fa-heart
 						<?php
 
-							$req = $conn->prepare('SELECT * FROM likes WHERE id_user = ? AND id_image = ?');
-							$req->execute([$_SESSION['user_id'],$value['id']]);
-							$find = $req->fetch();
+							$find = $conn->query('SELECT * FROM likes WHERE id_user = ? AND id_image = ?', [$_SESSION['user_id'],$value['id']])->fetch();
 							if ($find) { echo "blue"; } else { echo ""; }
 
 						?>" aria-hidden="true"></i>
 						<?php
 
-							$req = $conn->prepare('SELECT COUNT(*) FROM likes WHERE id_image = ?');
-							$req->execute([$value['id']]);
-							$id = $req->fetchColumn();
+							$id = $conn->query('SELECT COUNT(*) FROM likes WHERE id_image = ?', [$value['id']])->fetchColumn();
 							if ($id) { echo '<span class="count">'.$id.'</span>'; } else { echo ""; }
 
 						?>

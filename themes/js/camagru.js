@@ -1,14 +1,16 @@
 (function() {
 
-  var streaming = false,
+  var streaming    = false,
       video        = document.querySelector('#video'),
-      s_list	   = document.querySelector('#stickers-list'),
+      s_list	     = document.querySelector('#stickers-list'),
       sticker      = document.querySelector('#sticker'),
       canvas       = document.querySelector('#canvas'),
       startbutton  = document.querySelector('#startbutton'),
-      message  = document.querySelector('#message'),
-      width = 400,
-      height = 0;
+      message      = document.querySelector('#message'),
+      file         = document.querySelector('#file'),
+      allowedTypes = ['png', 'jpg', 'jpeg', 'gif'],
+      width        = 400,
+      height       = 0;
 
   navigator.getMedia = ( navigator.getUserMedia ||
                          navigator.webkitGetUserMedia ||
@@ -51,10 +53,12 @@
 
  function takepicture(callback) {
 
- 	canvas.width = width;
+    var tmp  = document.querySelector('#tmp');
+ 	  canvas.width = width;
     canvas.height = height;
     canvas.className = "rendu";
-    canvas.getContext('2d').drawImage(video, 0, 0, width, height);
+    if (tmp) { canvas.getContext('2d').drawImage(tmp, 0, 0, width, height); }
+    else { canvas.getContext('2d').drawImage(video, 0, 0, width, height); }
     canvas.getContext('2d').drawImage(sticker, 0, 0, width, height);
     var img = canvas.toDataURL('image/png');
 
@@ -73,9 +77,48 @@
 	message.innerHTML = sData;
 }
 
+function createThumbnail(file) {
+
+        var reader = new FileReader();
+
+        reader.addEventListener('load', function() {
+
+            var base       = document.querySelector('.cam'),
+                imgElement = document.createElement('img');
+            imgElement.setAttribute('width', width);
+            imgElement.setAttribute('height', height);
+            imgElement.src = this.result;
+            imgElement.id = 'tmp';
+            imgElement.className = 'upload';
+            base.appendChild(imgElement);
+
+        });
+
+        reader.readAsDataURL(file);
+    }
+
   startbutton.addEventListener('click', function(ev){
      takepicture(readData);
      ev.preventDefault();
   }, false);
+
+  file.addEventListener('change', function() {
+    var files = this.files,
+        filesLen = files.length,
+        imgType;
+
+        for (var i = 0; i < filesLen; i++) {
+
+            imgType = files[i].name.split('.');
+            imgType = imgType[imgType.length - 1];
+
+            if (allowedTypes.indexOf(imgType) != -1) {
+                createThumbnail(files[i]);
+            }
+
+
+
+        }
+  });
 
 })();
