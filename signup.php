@@ -1,5 +1,5 @@
 <?php
-	
+
 	if (isset($_POST['submit']))
 	{
 		try {
@@ -51,15 +51,15 @@
 				$email = $_POST['email'];
 				$subject = "Activate your account";
 				$header = "From: noreply@camagru.io";
-				 
+
 				// Le lien d'activation est composé du login(log) et de la clé(cle)
 				$message = '			Welcome to Camagru,
-				 
+
 				To activate your account, please follow the link bellow
 				or copy/paste the link into your browser.
-				 
+
 				http://localhost:8080/camagru/activation.php?username='.urlencode($_POST['username']).'&token='.urlencode($token).'
-				 
+
 				---------------
 
 				This is an automatic email.';
@@ -71,7 +71,7 @@
 
 		}
 		catch (PDOException $e) {
-			echo $sql . "<br>" . $e->getMessage();
+			echo $req . "<br>" . $e->getMessage();
 		}
 
 		$conn = null;
@@ -112,7 +112,7 @@
 
 			<input type="submit" name="submit" value="Sign Up" class="btn btn-blue">
 			<br>
-			
+
 			<?php echo '<span class="success-msg">' . $msg . '</span><br>'; ?>
 		</form>
 

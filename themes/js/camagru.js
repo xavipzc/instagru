@@ -2,10 +2,11 @@
 
   var streaming = false,
       video        = document.querySelector('#video'),
-      cover        = document.querySelector('#cover'),
+      s_list	   = document.querySelector('#stickers-list'),
+      sticker      = document.querySelector('#sticker'),
       canvas       = document.querySelector('#canvas'),
-      photo        = document.querySelector('#photo'),
       startbutton  = document.querySelector('#startbutton'),
+      message  = document.querySelector('#message'),
       width = 400,
       height = 0;
 
@@ -38,22 +39,42 @@
       height = video.videoHeight / (video.videoWidth/width);
       video.setAttribute('width', width);
       video.setAttribute('height', height);
-      canvas.setAttribute('width', width);
-      canvas.setAttribute('height', height);
+      canvas.setAttribute('width', 0);
+      canvas.setAttribute('height', 0);
       streaming = true;
     }
   }, false);
 
-  function takepicture() {
-    canvas.width = width;
+  s_list.addEventListener("change", function() {
+	sticker.setAttribute('src', 'themes/img/stickers/'+ s_list.value +'.png');
+  });
+
+ function takepicture(callback) {
+
+ 	canvas.width = width;
     canvas.height = height;
+    canvas.className = "rendu";
     canvas.getContext('2d').drawImage(video, 0, 0, width, height);
+    canvas.getContext('2d').drawImage(sticker, 0, 0, width, height);
     var img = canvas.toDataURL('image/png');
-    photo.setAttribute('src', img);
-  }
+
+ 	var html = getXMLHttpRequest();
+ 	html.onreadystatechange = function() {
+		if (html.readyState == 4 && (html.status == 200 || html.status == 0)) {
+			callback(html.responseText);
+		}
+	};
+ 	html.open("POST", "webcam.php", true);
+	html.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	html.send("image=" + encodeURIComponent(img));
+ }
+
+ function readData(sData) {
+	message.innerHTML = sData;
+}
 
   startbutton.addEventListener('click', function(ev){
-      takepicture();
+     takepicture(readData);
      ev.preventDefault();
   }, false);
 

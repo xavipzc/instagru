@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 	try {
 		require('config/database.php');
@@ -30,14 +30,14 @@
 		}
 	}
 	catch (PDOException $e) {
-		echo $sql . "<br>" . $e->getMessage();
+		echo $req . "<br>" . $e->getMessage();
 	}
 
 	$conn = null;
 
 ?>
 
-<?php 
+<?php
 	require('themes/header.php');
 ?>
 

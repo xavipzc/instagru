@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 	try {
 		require('config/database.php');
@@ -38,7 +38,7 @@
 				<?php
 				require_once('themes/footer.html');
 			}
-			else 
+			else
 			{
 				require_once('themes/header.php');
 				?>
@@ -56,7 +56,7 @@
 		}
 	}
 	catch (PDOException $e) {
-		echo $sql . "<br>" . $e->getMessage();
+		echo $req . "<br>" . $e->getMessage();
 	}
 
 	$conn = null;

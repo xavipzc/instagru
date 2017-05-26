@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 	// INIT DATABASE
 
@@ -16,7 +16,7 @@
 
 	// connection to database
 	$connection = new PDO($DB_DSN.";dbname=".$DB_NAME, $DB_USER, $DB_PASSWORD);
-	 
+
 	// check if connection is ok
 	if ($connection){
 		// table request init
@@ -30,6 +30,23 @@
 					`created` DATETIME NOT NULL
 					) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;";
 		$connection->prepare($users)->execute();
+
+		$images = "CREATE TABLE IF NOT EXISTS `".$DB_NAME."`.`images` (
+					`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+					`username` VARCHAR( 30 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+					`name` VARCHAR( 30 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+					`created` DATETIME NOT NULL
+					) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;";
+		$connection->prepare($images)->execute();
+
+		$comments = "CREATE TABLE IF NOT EXISTS `".$DB_NAME."`.`comments` (
+					`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+					`id_image` INT( 10 ) NOT NULL,
+					`username` VARCHAR( 30 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+					`comment` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+					`created` DATETIME NOT NULL
+					) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;";
+		$connection->prepare($comments)->execute();
 
 		$likes = "CREATE TABLE IF NOT EXISTS `".$DB_NAME."`.`likes` (
 					`id_user` INT( 10 ) NOT NULL ,

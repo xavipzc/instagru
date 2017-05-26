@@ -18,9 +18,10 @@ if (session_status() == PHP_SESSION_NODE)
 	<!-- Fonts -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700|Pacifico" rel="stylesheet">
 	<link href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
-	
+
 	<!-- Favicon -->
 	<link href="themes/img/42.png" rel="icon" type="image/svg">
+
 </head>
 <body>
 
@@ -41,7 +42,7 @@ if (session_status() == PHP_SESSION_NODE)
 		<?php else: ?>
 			<li><a href="login.php" class="btn btn-blue">Log in</a></li>
 		<?php endif; ?>
-		
+
 	</ul>
 	<div class="clear"></div>
 </nav>

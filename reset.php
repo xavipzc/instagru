@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 	if (isset($_POST['submit']))
 	{
@@ -25,15 +25,15 @@
 					$email = $user['email'];
 					$subject = "Reset your password";
 					$header = "From: noreply@camagru.io";
-					 
+
 					// Le lien d'activation est composé du login(log) et de la clé(cle)
 					$message = '			Hello,
-					 
+
 					You forgot your password, if you want to change it please
 					follow the link bellow or copy/paste the link into your browser.
-					 
+
 					http://localhost:8080/camagru/change.php?username='.urlencode($user['username']).'&token='.urlencode($token).'
-					 
+
 					---------------
 
 					This is an automatic email.';
@@ -45,7 +45,7 @@
 				else { $msg = '<br><span class="error-msg">This account doesn\'t exist</span><br>'; }
 			}
 			catch (PDOException $e) {
-				echo $sql . "<br>" . $e->getMessage();
+				echo $req . "<br>" . $e->getMessage();
 			}
 			$conn = null;
 		}
@@ -62,17 +62,17 @@
 		</h1>
 
 		<form action="" method="POST" class="align-center">
-			
+
 			<p class="align-center">
 				Enter your email to reset your password.
 			</p>
 
 			<input type="email" name="email" id="email" placeholder="Your email" >
-			<br>		
+			<br>
 
 			<input type="submit" name="submit" value="Reset password" class="btn btn-blue">
 			<?php echo $msg; ?>
-			
+
 		</form>
 
 		<p class="align-center forgot">

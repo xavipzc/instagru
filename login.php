@@ -12,11 +12,12 @@
 			$user = $req->fetch();
 
 			$passwd = hash(whirlpool, $_POST['passwd']);
-			
+
 			if ($user['password'] == $passwd)
 			{
 				session_start();
 				$_SESSION['user'] = $user['username'];
+				$_SESSION['user_id'] = $user['id'];
 				header('Location: index.php');
 				exit();
 			}
@@ -26,7 +27,7 @@
 			}
 		}
 		catch (PDOException $e) {
-			echo $sql . "<br>" . $e->getMessage();
+			echo $req . "<br>" . $e->getMessage();
 		}
 
 		$conn = null;
@@ -53,11 +54,11 @@
 			<label for="passwd">Password</label>
 			<br>
 			<input type="password" name="passwd" id="passwd" placeholder="Your password" required>
-			<br>			
+			<br>
 
 			<input type="submit" name="submit" value="Log in" class="btn btn-blue">
 			<?php echo $msg; ?>
-			
+
 		</form>
 
 		<p class="align-center forgot">

@@ -1,5 +1,5 @@
 <?php
-	
+
 	if (!empty($_POST) && !empty($_POST['username']) && !empty($_POST['passwd']) && !empty($_POST['passwd_confirm']))
 	{
 		if ($_POST['passwd'] == $_POST['passwd_confirm'])
