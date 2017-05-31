@@ -10,6 +10,12 @@
 	<p>Hey <?php echo ucfirst($_SESSION['user']); ?> you can use your webcam to start telling your story or upload your own pictures.</p>
 
 	<div class="cam align-left">
+
+		<div class="choosefile">
+			<input id="file" type="file" class="inputfile" />
+			<label for="file"><i class="fa fa-upload" aria-hidden="true"></i> Choose a file</label>
+		</div>
+
 		<video id="video"></video>
 
 		<div class="sticker-select">
@@ -23,7 +29,7 @@
 		</div>
 
 		<img src="themes/img/stickers/thug.png" width="400px" height="300px" id="sticker">
-		<button id="startbutton" class="btn btn-blue">Prendre une photo</button>
+		<button id="startbutton" class="btn btn-blue">Take a picture</button>
 	</div>
 	<div class="align-left">
 		<canvas id="canvas"></canvas>
@@ -31,8 +37,6 @@
 	</div>
 
 	<div class="clear"></div>
-
-	<input id="file" type="file" multiple />
 	
 	<div class="separator"></div>
 

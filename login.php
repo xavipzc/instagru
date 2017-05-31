@@ -2,40 +2,30 @@
 
 	if (!empty($_POST) && !empty($_POST['username']) && !empty($_POST['passwd']))
 	{
-		try {
-			require('config/database.php');
-			$conn = new PDO($DB_DSN.";dbname=".$DB_NAME, $DB_USER, $DB_PASSWORD);
-			$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		require_once('includes/bootstrap.php');
+		$conn = App::getDatabase();
+		$user = $conn->query("SELECT * FROM users WHERE (username = :username OR email = :username) AND active = '1'",
+							 [':username' => $_POST['username']])->fetch();
 
-			$req = $conn->prepare("SELECT * FROM users WHERE (username = :username OR email = :username) AND active = '1'");
-			$req->execute([':username' => $_POST['username']]);
-			$user = $req->fetch();
+		$passwd = hash(whirlpool, $_POST['passwd']);
 
-			$passwd = hash(whirlpool, $_POST['passwd']);
-
-			if ($user['password'] == $passwd)
-			{
-				session_start();
-				$_SESSION['user'] = $user['username'];
-				$_SESSION['user_id'] = $user['id'];
-				header('Location: index.php');
-				exit();
-			}
-			else
-			{
-				$msg = '<br><span class="error-msg">Wrong username or password.</span><br>';
-			}
+		if ($user['password'] === $passwd)
+		{
+			session_start();
+			$_SESSION['user'] = $user['username'];
+			$_SESSION['user_id'] = $user['id'];
+			header('Location: index.php');
+			exit();
 		}
-		catch (PDOException $e) {
-			echo $req . "<br>" . $e->getMessage();
+		else
+		{
+			$msg = '<br><span class="error-msg">Wrong username or password.</span><br>';
 		}
-
-		$conn = null;
 	}
 
 ?>
 
-<?php require_once('themes/header.php'); ?>
+<?php require('themes/header.php'); ?>
 
 <div class="log-in">
 	<div class="encart">
@@ -74,4 +64,4 @@
 	</div>
 </div>
 
-<?php require_once('themes/footer.html'); ?>
+<?php require('themes/footer.html'); ?>

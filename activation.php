@@ -37,4 +37,4 @@
 	<?php echo $msg; ?>
 
 
-<?php require_once('themes/footer.html'); ?>
+<?php require('themes/footer.html'); ?>

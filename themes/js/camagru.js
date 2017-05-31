@@ -7,10 +7,12 @@
       canvas       = document.querySelector('#canvas'),
       startbutton  = document.querySelector('#startbutton'),
       message      = document.querySelector('#message'),
+      chooseFile   = document.querySelector('.choosefile'),
       file         = document.querySelector('#file'),
+      checkTmp     = document.querySelector('#tmp'),
       allowedTypes = ['png', 'jpg', 'jpeg', 'gif'],
       width        = 400,
-      height       = 0;
+      height       = 300;
 
   navigator.getMedia = ( navigator.getUserMedia ||
                          navigator.webkitGetUserMedia ||
@@ -30,11 +32,13 @@
         video.src = vendorURL.createObjectURL(stream);
       }
       video.play();
+      chooseFile.className = "choosefile hidden";
     },
     function(err) {
       console.log("An error occured! " + err);
     }
   );
+
 
   video.addEventListener('canplay', function(ev){
     if (!streaming) {
@@ -47,9 +51,11 @@
     }
   }, false);
 
+
   s_list.addEventListener("change", function() {
-	sticker.setAttribute('src', 'themes/img/stickers/'+ s_list.value +'.png');
+	  sticker.setAttribute('src', 'themes/img/stickers/'+ s_list.value +'.png');
   });
+
 
  function takepicture(callback) {
 
@@ -77,6 +83,13 @@
 	message.innerHTML = sData;
 }
 
+  startbutton.addEventListener('click', function(ev){
+     //var checkTmp = document.querySelector('#tmp');
+     //document.querySelector('.cam').removeChild(checkTmp);
+     takepicture(readData);
+     ev.preventDefault();
+  }, false);
+
 function createThumbnail(file) {
 
         var reader = new FileReader();
@@ -97,14 +110,10 @@ function createThumbnail(file) {
         reader.readAsDataURL(file);
     }
 
-  startbutton.addEventListener('click', function(ev){
-     takepicture(readData);
-     ev.preventDefault();
-  }, false);
-
   file.addEventListener('change', function() {
     var files = this.files,
         filesLen = files.length,
+        checkTmp = document.querySelector('#tmp'),
         imgType;
 
         for (var i = 0; i < filesLen; i++) {
@@ -113,11 +122,19 @@ function createThumbnail(file) {
             imgType = imgType[imgType.length - 1];
 
             if (allowedTypes.indexOf(imgType) != -1) {
+              if (files[i].size <= 3000000){
+                if (checkTmp){
+                  document.querySelector('.cam').removeChild(checkTmp);
+                }
                 createThumbnail(files[i]);
+                chooseFile.className = "choosefile hidden";
+              } else {
+                alert("This image is too big ! 3MB max");  
+              }
             }
-
-
-
+            else {
+              alert("This is not an image format !");
+            }
         }
   });
 

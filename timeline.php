@@ -70,4 +70,4 @@
 
 		<div class="clear"></div>
 
-<?php require_once('themes/footer.html'); ?>
+<?php require('themes/footer.html'); ?>
