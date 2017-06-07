@@ -6,48 +6,38 @@
 			$msg = '<br><span class="error-msg">Empty field!</span><br>';
 		}
 		else {
-			try {
-				require('config/database.php');
-				$conn = new PDO($DB_DSN.";dbname=".$DB_NAME, $DB_USER, $DB_PASSWORD);
-				$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			require_once('includes/bootstrap.php');
+			$conn = App::getDatabase();
+			$user = $conn->query("SELECT * FROM users WHERE email = ? AND active = '1'",
+					[$_POST['email']])->fetch();
 
-				$req = $conn->prepare("SELECT * FROM users WHERE email = ? AND active = '1'");
-				$req->execute([$_POST['email']]);
-				$user = $req->fetch();
+			if ($user)
+			{
+				$token = hash(sha1, $date);
+				$conn->query("UPDATE users SET token = ? WHERE email = ?", [$token, $user['email']]);
 
-				if ($user)
-				{
-					$token = hash(sha1, $date);
-					$upd = $conn->prepare("UPDATE users SET token = ? WHERE email = ?");
-					$upd->execute([$token, $user['email']]);
+				// Préparation du mail contenant le lien d'activation
+				$email = $user['email'];
+				$subject = "Reset your password";
+				$header = "From: noreply@camagru.io";
 
-					// Préparation du mail contenant le lien d'activation
-					$email = $user['email'];
-					$subject = "Reset your password";
-					$header = "From: noreply@camagru.io";
+				// Le lien d'activation est composé du login(log) et de la clé(cle)
+				$message = '			Hello,
 
-					// Le lien d'activation est composé du login(log) et de la clé(cle)
-					$message = '			Hello,
+				You forgot your password, if you want to change it please
+				follow the link bellow or copy/paste the link into your browser.
 
-					You forgot your password, if you want to change it please
-					follow the link bellow or copy/paste the link into your browser.
+				http://localhost:8080/camagru/change.php?username='.urlencode($user['username']).'&token='.urlencode($token).'
 
-					http://localhost:8080/camagru/change.php?username='.urlencode($user['username']).'&token='.urlencode($token).'
+				---------------
 
-					---------------
+				This is an automatic email.';
 
-					This is an automatic email.';
+				mail($email, $subject, $message, $header) ; // Envoi du mail
 
-					mail($email, $subject, $message, $header) ; // Envoi du mail
-
-					$msg = '<br><span class="success-msg">An email with the instructions has been sent to your inbox !</span><br>';
-				}
-				else { $msg = '<br><span class="error-msg">This account doesn\'t exist</span><br>'; }
+				$msg = '<br><span class="success-msg">An email with the instructions has been sent to your inbox !</span><br>';
 			}
-			catch (PDOException $e) {
-				echo $req . "<br>" . $e->getMessage();
-			}
-			$conn = null;
+			else { $msg = '<br><span class="error-msg">This account doesn\'t exist</span><br>'; }
 		}
 	}
 

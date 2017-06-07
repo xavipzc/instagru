@@ -178,7 +178,7 @@ form input[type=submit] {
 .cam video,
 .cam img,
 .cam .upload,
-.cam .choosefile {
+.cam #choosefile {
 	position: absolute;
 	top: 20px;
 	left: 20px;
@@ -198,7 +198,7 @@ form input[type=submit] {
 	font-size: 0.8em;
 }
 
-.cam .choosefile {
+.cam #choosefile {
 	background-color: black;
 	z-index: 120;
 	bottom: 80px;

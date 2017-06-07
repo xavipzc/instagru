@@ -11,7 +11,7 @@
 
 	<div class="cam align-left">
 
-		<div class="choosefile">
+		<div id="choosefile" class="hidden">
 			<input id="file" type="file" class="inputfile" />
 			<label for="file"><i class="fa fa-upload" aria-hidden="true"></i> Choose a file</label>
 		</div>
@@ -37,7 +37,7 @@
 	</div>
 
 	<div class="clear"></div>
-	
+
 	<div class="separator"></div>
 
 	<div class="gallery">
@@ -50,7 +50,7 @@
 			if ($pics) {
 				foreach ($pics as $key => $value) { ?>
 					<div class="card align-left">
-					<img src="db_image/<?php echo $value['name']; ?>.png" alt="<?php echo $value['name']; ?>">
+					<img src="db_image/image-<?php echo $value['id']; ?>.png" alt="image-<?php echo $value['id']; ?>">
 					<div class="underbar">
 						<span class="user">
 							<span class="date"><?php echo date('F j, Y - H:i A', strtotime($value['created']));; ?></span>
@@ -81,7 +81,7 @@
 								?>
 								</a>
 								</li>
-								<li><a href="delete.php?id=<?php echo $value['id']; ?>" title="Delete it"><i class="fa fa-trash red" aria-hidden="true"></i></a></li>
+								<li><a href="delete.php?id=<?php echo $value['id']; ?>" onclick="if(confirm('You really want to delete this ?')){ document.location.href = url;} else {}" title="Delete it"><i class="fa fa-trash red" aria-hidden="true"></i></a></li>
 							</ul>
 						<?php endif; ?>
 					</div>
@@ -93,7 +93,7 @@
 		?>
 
 				<div class="clear"></div>
-		
+
 	</div>
 
 	<script src="themes/js/func.js"></script>

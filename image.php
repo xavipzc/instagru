@@ -9,20 +9,19 @@
 		if (isset($_POST['submit']) && !empty($_POST['comment']))
 		{
 				$conn = App::getDatabase();
-				$conn->query('INSERT INTO comments SET id_image = ?, username = ?, comment = ?, created =?', 
+				$conn->query('INSERT INTO comments SET id_image = ?, username = ?, comment = ?, created =?',
 							 [$_GET['id'], $_SESSION['user'], htmlentities($_POST['comment']), getMyDateFormat()]);
 				$owner = $conn->query('SELECT users.email FROM users INNER JOIN images ON users.username = images.username WHERE images.id = ?',
 							 [$_GET['id']])->fetch();
 
+				// email configuration
 				$email = $owner['email'];
 				$subject = $_SESSION['user'] . " commented your picture !";
 				$header = "From: noreply@camagru.io";
-
-				// Le lien d'activation est composé du login(log) et de la clé(cle)
 				$message = '			Yo,
 
 				'. $_SESSION['user'] .' has just commented your picture :
-				
+
 				"'. htmlentities($_POST['comment']) .'"
 
 				You can see it with the link below :
@@ -32,7 +31,7 @@
 
 				This is an automatic email.';
 
-				mail($email, $subject, $message, $header) ; // Envoi du mail
+				mail($email, $subject, $message, $header) ; // Send the email
 
 		} else if (isset($_POST['submit'])) {
 			$error = 'Your comment is not valid';
@@ -41,14 +40,14 @@
 		$conn = App::getDatabase();
 		$pic = $conn->query('SELECT * FROM images WHERE id = ?', [$_GET['id']])->fetch();
 
-		if ($pic) { 
+		if ($pic) {
 
 			require('themes/header.php');
 
 			?>
 
 			<div class="card align-left">
-				<img src="db_image/<?php echo $pic['name']; ?>.png" alt="<?php echo $pic['name']; ?>">
+				<img src="db_image/image-<?php echo $pic['id']; ?>.png" alt="image-<?php echo $pic['id']; ?>">
 				<div class="underbar">
 				<span class="user">by <?php echo $pic['username']; ?>
 					<span class="date"> - <?php echo date('F j, Y - H:i A', strtotime($pic['created']));; ?></span>

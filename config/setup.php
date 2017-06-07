@@ -34,7 +34,6 @@
 		$images = "CREATE TABLE IF NOT EXISTS `".$DB_NAME."`.`images` (
 					`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 					`username` VARCHAR( 30 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
-					`name` VARCHAR( 30 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
 					`created` DATETIME NOT NULL
 					) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;";
 		$connection->prepare($images)->execute();
