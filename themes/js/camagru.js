@@ -11,7 +11,7 @@
 		file			= document.querySelector('#file'),
 		checkTmp		= document.querySelector('#tmp'),
 		cancelUp		= document.querySelector('#cancel-upload'),
-		allowedTypes	= ['png', 'jpg', 'gif'],
+		allowedTypes	= ['png', 'jpg', 'gif', 'jpeg'],
 		width			= 400,
 		height			= 300;
 

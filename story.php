@@ -41,6 +41,7 @@
 	<div class="clear"></div>
 
 	<div class="separator"></div>
+	<h2>My Pictures</h2>
 
 	<div class="gallery">
 

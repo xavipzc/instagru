@@ -18,3 +18,16 @@ function getXMLHttpRequest() {
 
 	return html;
 }
+
+function my_likes_func($nb) {
+	html = getXMLHttpRequest();
+
+	html.onreadystatechange = function() {
+		if (html.readyState == 4 && (html.status == 200 || html.status == 0)) {
+			alert($nb + html.responseText);
+		}
+	};
+	html.open("GET", "like.php?id="+$nb, true);
+	html.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	html.send();
+}

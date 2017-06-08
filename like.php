@@ -20,10 +20,11 @@ if (!empty($_GET['id']) && isset($_SESSION['user']))
 			$conn->query('INSERT INTO likes SET id_user = ?, id_image = ?',
 						[$_SESSION['user_id'] ,$_GET['id']]);
 		}
-		header('Location: timeline.php');
+		echo "TEST";
+		
 	}
-	header('Location: timeline.php');
+	// header('Location: timeline.php');
 }
-header('Location: timeline.php');
+// header('Location: timeline.php');
 
 ?>

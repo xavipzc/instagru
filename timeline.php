@@ -1,8 +1,28 @@
 <?php
 
 	session_start();
-	require('themes/header.php');
 	require_once('includes/bootstrap.php');
+	
+	$conn = App::getDatabase();
+	$allpics = $conn->query('SELECT * FROM images ORDER BY id desc')->fetchAll();
+	$a = ceil(sizeof($allpics) / 6);
+
+	if (isset($_GET['page']) && !ctype_digit($_GET['page'])) {
+		header('Location: 404.php');
+		die();
+	} else {
+		$page = $_GET['page'];
+		if ($page == "" || $page == "0" || $page == "1") {
+			$page1 = 0;
+		} elseif ($page > $a) {
+			header('Location: 404.php');
+			die();
+		} else {
+			$page1 = ($page * 6) - 6;
+		}
+	}
+
+	require('themes/header.php');
 
 ?>
 <?php if (isset($_SESSION['user'])): ?>
@@ -24,19 +44,20 @@
 
 <?php
 
-	$conn = App::getDatabase();
-
 	if (!empty($_POST) && !empty($_POST['search'])) {
 		$user = $conn->query('SELECT * FROM users WHERE username = ?', [$_POST['search']])->fetch();
 		if ($user) {
+			$page = false;
 			$pics = $conn->query('SELECT * FROM images WHERE username = ? ORDER BY id desc', [$_POST['search']])->fetchAll();
 			echo '<p>Looking for '.ucfirst(htmlentities($_POST['search'])).' pictures : </p>';
 		} else {
-			$pics = $conn->query('SELECT * FROM images ORDER BY id desc')->fetchAll();
+			$page = true;
+			$pics = $conn->query('SELECT * FROM images ORDER BY id desc LIMIT '.$page1.',6')->fetchAll();
 			echo "<span class=\"error-msg\">". htmlentities($_POST['search']) ." doesn't exist</span><br>";
 		}
 	} else {
-		$pics = $conn->query('SELECT * FROM images ORDER BY id desc')->fetchAll();
+		$pics = $conn->query('SELECT * FROM images ORDER BY id desc LIMIT '.$page1.',6')->fetchAll();
+		$page = true;
 	}
 
 	if ($pics) {
@@ -79,12 +100,20 @@
 		</div>
 		<?php
 		}
+
+		?><div class="clear"></div><?php
+
+		if ($page) {
+			?><div class="pagination">Page : <?php
+			for ($b = 1; $b <= $a; $b++) {
+				?><a href="timeline.php?page=<?php echo $b; ?>"><?php echo $b." "; ?></a><?php
+			}					
+		}
+		?></div><?php
 	} else {
 		echo "There is no images yet. Be the first !";
 	}
 
 ?>
-
-		<div class="clear"></div>
 
 <?php require('themes/footer.html'); ?>

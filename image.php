@@ -8,12 +8,14 @@
 
 		if (isset($_POST['submit']) && !empty($_POST['comment']))
 		{
-				$conn = App::getDatabase();
-				$conn->query('INSERT INTO comments SET id_image = ?, username = ?, comment = ?, created =?',
-							 [$_GET['id'], $_SESSION['user'], htmlentities($_POST['comment']), getMyDateFormat()]);
-				$owner = $conn->query('SELECT users.email FROM users INNER JOIN images ON users.username = images.username WHERE images.id = ?',
-							 [$_GET['id']])->fetch();
+			$conn = App::getDatabase();
+			$conn->query('INSERT INTO comments SET id_image = ?, username = ?, comment = ?, created =?',
+						 [$_GET['id'], $_SESSION['user'], htmlentities($_POST['comment']), getMyDateFormat()]);
+			$owner = $conn->query('SELECT users.email, users.username FROM users INNER JOIN images ON users.username = images.username WHERE images.id = ?',
+						 [$_GET['id']])->fetch();
 
+			if ($owner['username'] != $_SESSION['user'])
+			{
 				// email configuration
 				$email = $owner['email'];
 				$subject = $_SESSION['user'] . " commented your picture !";
@@ -32,6 +34,7 @@
 				This is an automatic email.';
 
 				mail($email, $subject, $message, $header) ; // Send the email
+			}
 
 		} else if (isset($_POST['submit'])) {
 			$error = 'Your comment is not valid';
@@ -54,7 +57,7 @@
 				</span>
 				<?php if (isset($_SESSION['user'])): ?>
 					<ul>
-						<li><a href="like.php?id=<?php echo $pic['id']; ?>" title="Like it"><i class="fa fa-heart
+						<li><a href="#" onclick="my_likes_func(<?php echo $pic['id']; ?>)" title="Like it"><i class="fa fa-heart
 						<?php
 
 							$find = $conn->query('SELECT * FROM likes WHERE id_user = ? AND id_image = ?', [$_SESSION['user_id'],$pic['id']])->fetch();
@@ -104,6 +107,8 @@
 			</div>
 
 			<div class="clear"></div>
+
+			<script src="themes/js/func.js"></script>
 
 		<?php }
 
