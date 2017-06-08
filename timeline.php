@@ -7,12 +7,15 @@
 ?>
 <?php if (isset($_SESSION['user'])): ?>
 
-		<h1>The gallery</h1>
-		<p>Hello <?php echo ucfirst($_SESSION['user']); ?></p>
+		<h1>The World's Wall</h1>
+		<form action="" method="POST">
+			<input type="text" name="search" id="search" placeholder="Type an username to filter" maxlength="30" required>
+			<input type="submit" name="submit" class="btn btn-blue search" value="Search">
+		</form>
 
 <?php else: ?>
 
-		<h1>The gallery</h1>
+		<h1>The Wall</h1>
 		<div class="box-blue">
 			Hi, you have to be connected to comment and like pictures. <a href="signup.php">Sign up</a> or <a href="login.php">Log in</a>
 		</div>
@@ -22,7 +25,19 @@
 <?php
 
 	$conn = App::getDatabase();
-	$pics = $conn->query('SELECT * FROM images ORDER BY id desc')->fetchAll();
+
+	if (!empty($_POST) && !empty($_POST['search'])) {
+		$user = $conn->query('SELECT * FROM users WHERE username = ?', [$_POST['search']])->fetch();
+		if ($user) {
+			$pics = $conn->query('SELECT * FROM images WHERE username = ? ORDER BY id desc', [$_POST['search']])->fetchAll();
+			echo '<p>Looking for '.ucfirst(htmlentities($_POST['search'])).' pictures : </p>';
+		} else {
+			$pics = $conn->query('SELECT * FROM images ORDER BY id desc')->fetchAll();
+			echo "<span class=\"error-msg\">". htmlentities($_POST['search']) ." doesn't exist</span><br>";
+		}
+	} else {
+		$pics = $conn->query('SELECT * FROM images ORDER BY id desc')->fetchAll();
+	}
 
 	if ($pics) {
 		foreach ($pics as $key => $value) { ?>
@@ -64,6 +79,8 @@
 		</div>
 		<?php
 		}
+	} else {
+		echo "There is no images yet. Be the first !";
 	}
 
 ?>

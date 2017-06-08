@@ -1,5 +1,7 @@
 <?php
 
+	session_start();
+
 	if (isset($_POST['submit']))
 	{
 		require_once('includes/bootstrap.php');
@@ -62,52 +64,69 @@
 		}
 	}
 
+	require('themes/header.php');
 ?>
 
-<?php require('themes/header.php'); ?>
+<?php if (isset($_SESSION['user'])): ?>
 
-<div class="log-in">
-	<div class="encart">
-
-		<h1 class="align-center">
-			<i class="fa fa-instagram" aria-hidden="true"></i> Camagru
-		</h1>
-		<p class="align-center">
-			Sign up to share photos with your friends.
-		</p>
-
-		<div class="separator"></div>
-
-		<form action="" method="POST" class="align-center">
-
-			<label for="email">Email</label>
-			<br>
-			<input type="text" name="email" id="email" placeholder="Your email" maxlength="50" required>
-			<br><?php if ($errors['email']) { echo '<span class="error-msg">' . $errors['email'] . '</span><br>'; }; ?>
-
-			<label for="username">Username</label>
-			<br>
-			<input type="text" name="username" id="username" placeholder="Your username" maxlength="30" required>
-			<br><?php if ($errors['username']) { echo '<span class="error-msg">' . $errors['username'] . '</span><br>'; }; ?>
-
-			<label for="passwd">Password</label>
-			<br>
-			<input type="password" name="passwd" id="passwd" placeholder="Choose a password" required>
-			<br><?php if ($errors['passwd']) { echo '<span class="error-msg">' . $errors['passwd'] . '</span><br>'; }; ?>
-
-			<input type="submit" name="submit" value="Sign Up" class="btn btn-blue">
-			<br>
-
-			<?php echo '<span class="success-msg">' . $msg . '</span><br>'; ?>
-		</form>
-
-		<div class="separator"></div>
-
-		<p class="align-center">
-			Have an account ? <a href="login.php">Log in</a>
-		</p>
-
+	<div class="log-in">
+		<div class="encart">
+			<h1 class="align-center">
+				<i class="fa fa-instagram" aria-hidden="true"></i> Camagru
+			</h1>
+			<p class="align-center">
+				You are already log in. Please log out to sign up an account.
+			</p>
+		</div>
 	</div>
-</div>
 
-<?php require_once('themes/footer.html'); ?>
+<?php else: ?>
+
+	<div class="log-in">
+		<div class="encart">
+
+			<h1 class="align-center">
+				<i class="fa fa-instagram" aria-hidden="true"></i> Camagru
+			</h1>
+			<p class="align-center">
+				Sign up to share photos with your friends.
+			</p>
+
+			<div class="separator"></div>
+
+			<form action="" method="POST" class="align-center">
+
+				<label for="email">Email</label>
+				<br>
+				<input type="text" name="email" id="email" placeholder="Your email" maxlength="50" required>
+				<br><?php if ($errors['email']) { echo '<span class="error-msg">' . $errors['email'] . '</span><br>'; }; ?>
+
+				<label for="username">Username</label>
+				<br>
+				<input type="text" name="username" id="username" placeholder="Your username" maxlength="30" required>
+				<br><?php if ($errors['username']) { echo '<span class="error-msg">' . $errors['username'] . '</span><br>'; }; ?>
+
+				<label for="passwd">Password</label>
+				<br>
+				<input type="password" name="passwd" id="passwd" placeholder="Choose a password" required>
+				<br><?php if ($errors['passwd']) { echo '<span class="error-msg">' . $errors['passwd'] . '</span><br>'; }; ?>
+
+				<input type="submit" name="submit" value="Sign Up" class="btn btn-blue">
+				<br>
+
+				<?php echo '<span class="success-msg">' . $msg . '</span><br>'; ?>
+			</form>
+
+			<div class="separator"></div>
+
+			<p class="align-center">
+				Have an account ? <a href="login.php">Log in</a>
+			</p>
+
+		</div>
+	</div>
+
+<?php endif; ?>
+
+<?php require('themes/footer.html'); ?>
+

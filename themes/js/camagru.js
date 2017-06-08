@@ -10,6 +10,7 @@
 		chooseFile		= document.querySelector('#choosefile'),
 		file			= document.querySelector('#file'),
 		checkTmp		= document.querySelector('#tmp'),
+		cancelUp		= document.querySelector('#cancel-upload'),
 		allowedTypes	= ['png', 'jpg', 'gif'],
 		width			= 400,
 		height			= 300;
@@ -34,8 +35,7 @@
 			video.play();
 		},
 		function(err) {
-			chooseFile.className = "";
-			console.log("An error occured! " + err);
+			chooseFile.removeAttribute("class");
 		}
 	);
 
@@ -99,12 +99,21 @@
 			imgElement.id = 'tmp';
 			imgElement.className = 'upload';
 			base.appendChild(imgElement);
+			cancelUp.className = 'btn btn-red';
         });
 
 		reader.readAsDataURL(file);
 
 	}
 
+	cancelUp.addEventListener('click', function(){
+		var checkTmp = document.querySelector('#tmp');
+		if (checkTmp){
+			document.querySelector('.cam').removeChild(checkTmp);
+		}
+		chooseFile.removeAttribute("class");
+		cancelUp.className = 'btn btn-red hidden';
+	});
 
 	file.addEventListener('change', function() {
 
@@ -142,7 +151,7 @@
 		} else {
 			takepicture(readData);
 			ev.preventDefault();
-			// location.reload();
+			setTimeout(function(){ location.reload(); }, 2000);
 		}
 	}, false);
 

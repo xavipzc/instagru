@@ -34,8 +34,7 @@ if (session_status() == PHP_SESSION_NODE)
 		<?php if (isset($_SESSION['user'])): ?>
 			<li><span>Hello <?php echo ucfirst($_SESSION['user']); ?>,</span></li>
 		<?php endif; ?>
-		<li><a href="timeline.php"><i class="fa fa-search" aria-hidden="true"></i> Search</a></li>
-		<li><a href="timeline.php">Gallery</a></li>
+		<li><a href="timeline.php">Wall</a></li>
 		<?php if (isset($_SESSION['user'])): ?>
 			<li><a href="story.php">My story</a></li>
 			<li><a href="logout.php" class="btn btn-red">Log out</a></li>

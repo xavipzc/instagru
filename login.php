@@ -1,5 +1,7 @@
 <?php
 
+	session_start();
+
 	if (!empty($_POST) && !empty($_POST['username']) && !empty($_POST['passwd']))
 	{
 		require_once('includes/bootstrap.php');
@@ -27,6 +29,18 @@
 
 <?php require('themes/header.php'); ?>
 
+<?php if (isset($_SESSION['user'])): ?>
+	<div class="log-in">
+		<div class="encart">
+			<h1 class="align-center">
+				<i class="fa fa-instagram" aria-hidden="true"></i> Camagru
+			</h1>
+			<p class="align-center">
+				You are already log in. Please log out to log into another account.
+			</p>
+		</div>
+	</div>
+<?php else: ?>
 <div class="log-in">
 	<div class="encart">
 
@@ -63,5 +77,5 @@
 
 	</div>
 </div>
-
+<?php endif; ?>
 <?php require('themes/footer.html'); ?>

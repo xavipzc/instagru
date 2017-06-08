@@ -6,7 +6,7 @@
 ?>
 <?php if (isset($_SESSION['user'])): require('themes/header.php'); ?>
 
-	<h1>Your story</h1>
+	<h1>My story</h1>
 	<p>Hey <?php echo ucfirst($_SESSION['user']); ?> you can use your webcam to start telling your story or upload your own pictures.</p>
 
 	<div class="cam align-left">
@@ -27,6 +27,8 @@
 				<option value="filter1">Filter 1</option>
 			</select>
 		</div>
+
+		<button id="cancel-upload" class="btn btn-red hidden">Cancel</button>
 
 		<img src="themes/img/stickers/thug.png" width="400px" height="300px" id="sticker">
 		<button id="startbutton" class="btn btn-blue">Take a picture</button>
