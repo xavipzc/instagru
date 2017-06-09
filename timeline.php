@@ -79,7 +79,7 @@
 						?>
 						</a>
 						</li>
-						<li><a href="like.php?id=<?php echo $value['id']; ?>" title="Like it"><i class="fa fa-heart
+						<li><a href="" onclick="my_likes_func(<?php echo $value['id']; ?>, this)" title="Like it"><i class="fa fa-heart
 						<?php
 
 							$find = $conn->query('SELECT * FROM likes WHERE id_user = ? AND id_image = ?', [$_SESSION['user_id'],$value['id']])->fetch();
@@ -89,7 +89,7 @@
 						<?php
 
 							$id = $conn->query('SELECT COUNT(*) FROM likes WHERE id_image = ?', [$value['id']])->fetchColumn();
-							if ($id) { echo '<span class="count">'.$id.'</span>'; } else { echo ""; }
+							if ($id) { echo '<span class="count">'.$id.'</span>'; } else { echo '<span class="count"></span>'; }
 
 						?>
 						</a>
@@ -101,7 +101,10 @@
 		<?php
 		}
 
-		?><div class="clear"></div><?php
+		?>	
+			<div class="clear"></div>
+			<script src="themes/js/func.js"></script>
+		<?php
 
 		if ($page) {
 			?><div class="pagination">Page : <?php

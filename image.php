@@ -6,7 +6,7 @@
 
 		require_once('includes/bootstrap.php');
 
-		if (isset($_POST['submit']) && !empty($_POST['comment']))
+		if (isset($_POST['submit']) && !empty($_POST['comment']) && strlen($_POST['comment']) <= 255)
 		{
 			$conn = App::getDatabase();
 			$conn->query('INSERT INTO comments SET id_image = ?, username = ?, comment = ?, created =?',
@@ -57,19 +57,20 @@
 				</span>
 				<?php if (isset($_SESSION['user'])): ?>
 					<ul>
-						<li><a href="#" onclick="my_likes_func(<?php echo $pic['id']; ?>)" title="Like it"><i class="fa fa-heart
+						<li><a href="" onclick="my_likes_func(<?php echo $pic['id']; ?>, this)" title="Like it"><i class="fa fa-heart
 						<?php
 
 							$find = $conn->query('SELECT * FROM likes WHERE id_user = ? AND id_image = ?', [$_SESSION['user_id'],$pic['id']])->fetch();
 							if ($find) { echo "blue"; } else { echo ""; }
 
-						?>" aria-hidden="true"></i></a>
+						?>" aria-hidden="true"></i>
 						<?php
 
 							$id = $conn->query('SELECT COUNT(*) FROM likes WHERE id_image = ?', [$pic['id']])->fetchColumn();
-							if ($id) { echo '<span class="count">'.$id.'</span>'; } else { echo ""; }
+							if ($id) { echo '<span class="count">'.$id.'</span>'; } else { echo '<span class="count"></span>'; }
 
 						?>
+						</a>
 						</li>
 					</ul>
 				<?php endif; ?>

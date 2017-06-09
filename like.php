@@ -20,11 +20,13 @@ if (!empty($_GET['id']) && isset($_SESSION['user']))
 			$conn->query('INSERT INTO likes SET id_user = ?, id_image = ?',
 						[$_SESSION['user_id'] ,$_GET['id']]);
 		}
-		echo "TEST";
+
+		$id = $conn->query('SELECT COUNT(*) FROM likes WHERE id_image = ?', [$_GET['id']])->fetchColumn();
+		$find = $conn->query('SELECT * FROM likes WHERE id_user = ? AND id_image = ?', [$_SESSION['user_id'],$pic['id']])->fetch();
+
+		if ($find) { echo $id . ",1"; } else { echo $id . ",0"; }
 		
 	}
-	// header('Location: timeline.php');
 }
-// header('Location: timeline.php');
 
 ?>

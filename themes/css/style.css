@@ -254,6 +254,7 @@ form input[type=submit] {
 	background-color: white;
 	padding: 5px 10px;
 	margin-bottom: 5px;
+	overflow-x: hidden;
 }
 .comment p {
 	margin: 0;

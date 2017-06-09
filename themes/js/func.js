@@ -19,15 +19,33 @@ function getXMLHttpRequest() {
 	return html;
 }
 
-function my_likes_func($nb) {
-	html = getXMLHttpRequest();
+function my_likes_func(nb, elem) {
+
+	var html 	= getXMLHttpRequest(),
+		likes 	= elem.childNodes[2],
+		heart 	= elem.childNodes[0];
 
 	html.onreadystatechange = function() {
 		if (html.readyState == 4 && (html.status == 200 || html.status == 0)) {
-			alert($nb + html.responseText);
+
+			var res = html.responseText.split(",");
+
+			if (res[0] == 0)
+			{
+				likes.innerHTML = "";
+				heart.classList.remove("blue");
+			} else {
+				if (res[1] == "0") { 
+					heart.classList.remove("blue"); 
+				} else { 
+					heart.classList.add("blue");
+				}
+				likes.innerHTML = res[0];
+			}
 		}
 	};
-	html.open("GET", "like.php?id="+$nb, true);
+	html.open("GET", "like.php?id="+nb, true);
 	html.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	html.send();
+	event.preventDefault();
 }
