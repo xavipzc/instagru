@@ -53,7 +53,9 @@
 			if ($pics) {
 				foreach ($pics as $key => $value) { ?>
 					<div class="card align-left">
-					<img src="db_image/image-<?php echo $value['id']; ?>.png" alt="image-<?php echo $value['id']; ?>">
+					<a href="image.php?id=<?php echo $value['id']; ?>">
+						<img src="db_image/image-<?php echo $value['id']; ?>.png" alt="image-<?php echo $value['id']; ?>">
+					</a>
 					<div class="underbar">
 						<span class="user">
 							<span class="date"><?php echo date('F j, Y - H:i A', strtotime($value['created']));; ?></span>
