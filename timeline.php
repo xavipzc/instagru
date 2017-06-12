@@ -2,7 +2,7 @@
 
 	session_start();
 	require_once('includes/bootstrap.php');
-	
+
 	$conn = App::getDatabase();
 	$allpics = $conn->query('SELECT * FROM images ORDER BY id desc')->fetchAll();
 	$a = ceil(sizeof($allpics) / 6);
@@ -28,7 +28,7 @@
 <?php if (isset($_SESSION['user'])): ?>
 
 		<h1>The World's Wall</h1>
-		<form action="" method="POST">
+		<form class="search-bar" action="" method="POST">
 			<input type="text" name="search" id="search" placeholder="Type an username to filter" maxlength="30" required>
 			<input type="submit" name="submit" class="btn btn-blue search" value="Search">
 		</form>
@@ -79,7 +79,7 @@
 						?>
 						</a>
 						</li>
-						<li><a href="" onclick="my_likes_func(<?php echo $value['id']; ?>, this)" title="Like it"><i class="fa fa-heart
+						<li><a href="" onclick="my_likes_func(<?php echo $value['id']; ?>, this, event)" title="Like it"><i class="fa fa-heart
 						<?php
 
 							$find = $conn->query('SELECT * FROM likes WHERE id_user = ? AND id_image = ?', [$_SESSION['user_id'],$value['id']])->fetch();
@@ -101,7 +101,7 @@
 		<?php
 		}
 
-		?>	
+		?>
 			<div class="clear"></div>
 			<script src="themes/js/func.js"></script>
 		<?php
@@ -110,7 +110,7 @@
 			?><div class="pagination">Page : <?php
 			for ($b = 1; $b <= $a; $b++) {
 				?><a href="timeline.php?page=<?php echo $b; ?>"><?php echo $b." "; ?></a><?php
-			}					
+			}
 		}
 		?></div><?php
 	} else {

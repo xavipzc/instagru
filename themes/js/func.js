@@ -19,7 +19,7 @@ function getXMLHttpRequest() {
 	return html;
 }
 
-function my_likes_func(nb, elem) {
+function my_likes_func(nb, elem, event) {
 
 	var html 	= getXMLHttpRequest(),
 		likes 	= elem.childNodes[2],
@@ -35,9 +35,9 @@ function my_likes_func(nb, elem) {
 				likes.innerHTML = "";
 				heart.classList.remove("blue");
 			} else {
-				if (res[1] == "0") { 
-					heart.classList.remove("blue"); 
-				} else { 
+				if (res[1] == "0") {
+					heart.classList.remove("blue");
+				} else {
 					heart.classList.add("blue");
 				}
 				likes.innerHTML = res[0];

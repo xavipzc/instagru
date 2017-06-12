@@ -9,8 +9,12 @@
 
 		$errors = array();
 
-		if (empty($_POST['username']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['username'])){
-			$errors['username'] = "Username not valid";
+		if (empty($_POST['username']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['username']) || strlen($_POST['username']) > 30){
+			if (strlen($_POST['username']) > 30) {
+				$errors['username'] = "30 characters maximum !";
+			} else {
+				$errors['username'] = "Username not valid";
+			}
 		}
 		else {
 			$user = $conn->query('SELECT id FROM users WHERE username = ?', [$_POST['username']])->fetch();
@@ -19,7 +23,7 @@
 			}
 		}
 
-		if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
+		if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) || strlen($_POST['email']) > 50){
 			$errors['email'] = "Your email is not valid";
 		}
 		else {
@@ -29,14 +33,21 @@
 			}
 		}
 
-		if (empty($_POST['passwd'])){
-			$errors['passwd'] = "You have to define a password";
+		if (empty($_POST['passwd']) || strlen($_POST['passwd']) < 4 || strlen($_POST['passwd']) > 128){
+			if (strlen($_POST['passwd']) > 128) {
+				$errors['passwd'] = "128 characters maximum !";
+			}
+			elseif (strlen($_POST['passwd']) < 4) {
+				$errors['passwd'] = "More than 4 characters please !";
+			} else {
+				$errors['passwd'] = "You have to define a password";
+			}
 		}
 
 		if (empty($errors))
 		{
 			$passwd = hash(whirlpool, $_POST['passwd']);
-			$token = hash(sha1, $date);
+			$token = hash(sha1, getMyDateFormat());
 
 			$conn->query("INSERT INTO users SET email = ?, username = ?, password = ?, token = ?, active = ?, created = ?",
 						[$_POST['email'], $_POST['username'], $passwd, $token, '0', getMyDateFormat()]);

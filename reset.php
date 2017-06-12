@@ -14,7 +14,7 @@
 
 			if ($user)
 			{
-				$token = hash(sha1, $date);
+				$token = hash(sha1, getMyDateFormat());
 				$conn->query("UPDATE users SET token = ? WHERE email = ?", [$token, $user['email']]);
 
 				// Préparation du mail contenant le lien d'activation

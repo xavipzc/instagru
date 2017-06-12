@@ -57,7 +57,7 @@
 				</span>
 				<?php if (isset($_SESSION['user'])): ?>
 					<ul>
-						<li><a href="" onclick="my_likes_func(<?php echo $pic['id']; ?>, this)" title="Like it"><i class="fa fa-heart
+						<li><a href="" onclick="my_likes_func(<?php echo $pic['id']; ?>, this, event)" title="Like it"><i class="fa fa-heart
 						<?php
 
 							$find = $conn->query('SELECT * FROM likes WHERE id_user = ? AND id_image = ?', [$_SESSION['user_id'],$pic['id']])->fetch();

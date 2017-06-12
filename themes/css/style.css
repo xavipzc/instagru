@@ -111,6 +111,10 @@ form input[type=submit] {
     margin: 10px;
 }
 
+.search-bar input[type=text] {
+	width: 75%;
+}
+
 /**** Cards ****/
 
 .card {
@@ -360,3 +364,29 @@ footer {
 .align-left { float: left; }
 .clear { clear: both; }
 .hidden { visibility: hidden; }
+
+@media only screen and (max-width: 580px) {
+	nav #logo {
+		font-size: 1.2em;
+	}
+	nav ul li {
+		font-size: 0.8em;
+		margin-left: 10px;
+	}
+	.btn {
+		padding: 2px 5px;
+	}
+	.search-bar input[type=text] {
+		width: 65%;
+	}
+	.card {
+	    width: 270px;
+	    height: 260px;
+	}
+	.card img {
+		width: 100%;
+	}
+	.underbar {
+		font-size: 0.8em;
+	}
+}

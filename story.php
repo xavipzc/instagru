@@ -69,7 +69,7 @@
 								?>
 								</a>
 								</li>
-								<li><a href="" onclick="my_likes_func(<?php echo $value['id']; ?>, this)" title="Like it"><i class="fa fa-heart
+								<li><a href="" onclick="my_likes_func(<?php echo $value['id']; ?>, this, event)" title="Like it"><i class="fa fa-heart
 								<?php
 
 									$find = $conn->query('SELECT * FROM likes WHERE id_user = ? AND id_image = ?', [$_SESSION['user_id'],$value['id']])->fetch();
@@ -84,7 +84,7 @@
 								?>
 								</a>
 								</li>
-								<li><a href="delete.php?id=<?php echo $value['id']; ?>" onclick="if(confirm('You really want to delete this ?')){ document.location.href = url;} else {}" title="Delete it"><i class="fa fa-trash red" aria-hidden="true"></i></a></li>
+								<li><a href="delete.php?id=<?php echo $value['id']; ?>" title="Delete it"><i class="fa fa-trash red" aria-hidden="true"></i></a></li>
 							</ul>
 						<?php endif; ?>
 					</div>

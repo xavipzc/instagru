@@ -138,7 +138,7 @@
 				}
 			}
 			else {
-				alert("This is not an image format ! (jpg, png, gif allowed)");
+				alert("This is not an image format ! (jpg, jpeg, png, gif allowed)");
 			}
 		}
 
