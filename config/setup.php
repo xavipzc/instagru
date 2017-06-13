@@ -1,5 +1,5 @@
 <?php
-
+	
 	// INIT DATABASE
 
 	// database infos
