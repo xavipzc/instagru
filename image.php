@@ -20,7 +20,9 @@
 				$email = $owner['email'];
 				$subject = $_SESSION['user'] . " commented your picture !";
 				$header = "From: noreply@camagru.io";
-				$path = explode("/", $_SERVER['PHP_SELF']);
+				$path_tab = explode("/", $_SERVER['PHP_SELF']);
+				array_pop($path_tab);
+				$path = implode("/", $path_tab);
 				$message = '			Yo,
 
 				'. $_SESSION['user'] .' has just commented your picture :
@@ -28,7 +30,7 @@
 				"'. htmlentities($_POST['comment']) .'"
 
 				You can see it with the link below :
-				http://localhost:8080/'.urlencode($path[1]).'/image.php?id='.urlencode($_GET['id']).'
+				http://'.$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].''.$path.'/image.php?id='.urlencode($_GET['id']).'
 
 				---------------
 

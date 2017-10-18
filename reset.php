@@ -21,7 +21,9 @@
 				$email = $user['email'];
 				$subject = "Reset your password";
 				$header = "From: noreply@camagru.io";
-				$path = explode("/", $_SERVER['PHP_SELF']);
+				$path_tab = explode("/", $_SERVER['PHP_SELF']);
+				array_pop($path_tab);
+				$path = implode("/", $path_tab);
 
 				// Le lien d'activation est composé du login(log) et de la clé(cle)
 				$message = '			Hello,
@@ -29,7 +31,7 @@
 				You forgot your password, if you want to change it please
 				follow the link bellow or copy/paste the link into your browser.
 
-				http://localhost:8080/'.urlencode($path[1]).'/change.php?username='.urlencode($user['username']).'&token='.urlencode($token).'
+				http://'.$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].''.$path.'/change.php?username='.urlencode($user['username']).'&token='.urlencode($token).'
 
 				---------------
 

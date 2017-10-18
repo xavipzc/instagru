@@ -56,7 +56,9 @@
 			$email = $_POST['email'];
 			$subject = "Activate your account";
 			$header = "From: noreply@camagru.io";
-			$path = explode("/", $_SERVER['PHP_SELF']);
+			$path_tab = explode("/", $_SERVER['PHP_SELF']);
+			array_pop($path_tab);
+			$path = implode("/", $path_tab);
 
 			// Le lien d'activation est composé du login(log) et de la clé(cle)
 			$message = '			Welcome to Camagru,
@@ -64,7 +66,7 @@
 			To activate your account, please follow the link bellow
 			or copy/paste the link into your browser.
 
-			http://localhost:8080/'.urlencode($path[1]).'/activation.php?username='.urlencode($_POST['username']).'&token='.urlencode($token).'
+			http://'.$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].''.$path.'/activation.php?username='.urlencode($_POST['username']).'&token='.urlencode($token).'
 
 			---------------
 
