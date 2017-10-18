@@ -28,7 +28,7 @@ Clone the project to your web server
 $> git clone https://github.com/xavipzc/instagru.git
 ```
 
-You may need to config the config/database.php file
+You may need to configure the config/database.php file
 
 ```
 <?php
@@ -41,12 +41,8 @@ $DB_PASSWORD = 'root';
 ?>
 ```
 
-Go to http://localhost/instagru/config/setup.php to initialize the db.
+Go to **http://localhost/instagru/config/setup.php** to initialize the db.
 It's ready to use, create your account !
-
-## Media
-
-![screen1](.img/screen1.png)
 
 ## Authors
 
