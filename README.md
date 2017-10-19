@@ -46,7 +46,7 @@ $DB_PASSWORD = 'root';
 ?>
 ```
 
-Go to http://localhost/instagru/config/setup.php` to initialize the db.
+Go to `http://localhost/instagru/config/setup.php` to initialize the db.
 It's ready to use, create your account !
 
 ## Author
